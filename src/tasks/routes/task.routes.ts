@@ -3,6 +3,9 @@ import express from 'express';
 const router = express.Router();
 
 import taskControllers from '../controllers/task.controllers';
+import { verifyTokenMiddleware } from '../../middlewares/auth.middleware';
+
+router.use(verifyTokenMiddleware)
 
 router.post('/', taskControllers.createTask);
 

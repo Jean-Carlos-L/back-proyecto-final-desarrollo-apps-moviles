@@ -1,11 +1,10 @@
 import { queriesDb } from "../../utils/queriesDb";
-import { CURRENT_TIMESTAMP } from "../../utils/dates.utils";
-import { TaskCreate, TaskUpdate } from "../types/task";
-import createInsertQuery from "../../utils/generateQueries.utils";
+import { TaskCreate, TaskUpdate } from "../models/task.model";
+import createInsertQuery, { createUpdateQuery } from "../../utils/generateQueries.utils";
 
-const getTasks = async () => {
-   const query = `SELECT * FROM tasks`;
-   const rows = await queriesDb(query);
+const getTasks = async ({ user_id }: { user_id: number }) => {
+   const query = `SELECT * FROM tasks WHERE user_id = ?`;
+   const rows = await queriesDb(query, [user_id]);
    return rows;
 }
 
@@ -22,8 +21,8 @@ const createTask = async (newTask: TaskCreate) => {
 }
 
 const updateTask = async (editTask: TaskUpdate) => {
-   const query = `UPDATE tasks SET ? WHERE id = ?`;
-   const rows = await queriesDb(query, [{ ...editTask, updated_at: CURRENT_TIMESTAMP() }, editTask.id]);
+   const { query, values } = createUpdateQuery('tasks', editTask, editTask.id);
+   const rows = await queriesDb(query, values);
    return rows;
 }
 

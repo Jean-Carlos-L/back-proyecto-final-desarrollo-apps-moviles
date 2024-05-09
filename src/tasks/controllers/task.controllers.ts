@@ -1,9 +1,11 @@
 import { Request, Response } from "express";
 import taskServices from "../services/task.services";
+import { TaskCreate } from "../models/task.model";
 
-const getTasks = async (_: Request, res: Response) => {
+const getTasks = async (req: Request, res: Response) => {
    try {
-      const tasks = await taskServices.getTasks();
+      const user_id = req.body.userSession.id;
+      const tasks = await taskServices.getTasks({ user_id });
       res.status(200).json({
          message: 'Tasks fetched successfully',
          data: tasks
@@ -15,7 +17,7 @@ const getTasks = async (_: Request, res: Response) => {
 
 const getTaskById = async (req: Request, res: Response) => {
    try {
-      const id = parseInt(req.params.id);
+      const id = Number(req.params.id);
       const task = await taskServices.getTaskById(id);
       res.status(200).json({
          message: 'Task fetched successfully',
@@ -29,7 +31,14 @@ const getTaskById = async (req: Request, res: Response) => {
 
 const createTask = async (req: Request, res: Response) => {
    try {
-      const task = await taskServices.createTask({ ...req.body });
+      const user_id = req.body.userSession.id;
+      delete req.body.userSession;
+      const newTask: TaskCreate = {
+         ...req.body,
+         user_id
+      };
+
+      const task = await taskServices.createTask(newTask);
       res.status(201).json({
          message: 'Task created successfully',
          data: task
@@ -43,6 +52,7 @@ const updateTask = async (req: Request, res: Response) => {
    try {
       const id = parseInt(req.params.id);
       const { title, description, state } = req.body;
+      console.log('req.body', req.body)
       const task = await taskServices.updateTask({ id, title, description, state });
       res.status(200).json({
          message: 'Task updated successfully',

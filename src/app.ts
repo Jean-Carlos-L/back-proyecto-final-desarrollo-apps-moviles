@@ -1,9 +1,11 @@
 import express from 'express';
+import cors from 'cors';
 import userRouter from './users/routes/user.routes'
 import taskRouter from './tasks/routes/task.routes'
 
 const app = express();
 app.use(express.json());
+app.use(cors());
 
 
 app.get('/', (_, res) => {
