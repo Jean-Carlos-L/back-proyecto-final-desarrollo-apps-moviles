@@ -1,6 +1,8 @@
 import { Request, Response } from 'express';
 import userServices from '../services/user.services';
 import { encryptPassword, comparePassword } from '../../utils/password.utils';
+import { createToken } from '../../utils/jwt.utils';
+import { User } from '../models/user.models';
 
 const login = async (req: Request, res: Response) => {
    try {
@@ -29,9 +31,20 @@ const login = async (req: Request, res: Response) => {
          return;
       }
 
+      const userObject: User = {
+         id: user[0].id,
+         email: user[0].email,
+         username: user[0].username,
+         password: user[0].password,
+         state: user[0].state,
+         create_at: user[0].create_at,
+         update_at: user[0].update_at,
+      };
+      const token = createToken<User>(userObject);
       res.status(200).json({
          message: 'User logged in successfully',
-         user,
+         user: userObject,
+         token,
       });
    } catch (error) {
       console.error(error)
