@@ -32,4 +32,10 @@ const deleteTask = async (id: number) => {
    return rows;
 }
 
-export default { getTasks, getTaskById, createTask, updateTask, deleteTask };
+const completeTask = async (id: number) => {
+   const query = `UPDATE tasks SET state = 2 WHERE id = ?`;
+   const rows = await queriesDb(query, [id]);
+   return rows;
+}
+
+export default { getTasks, getTaskById, createTask, updateTask, deleteTask, completeTask };
