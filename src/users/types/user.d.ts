@@ -10,3 +10,9 @@ export interface UserUpdate {
    password: string;
    id: number;
 }
+
+export interface UserThemeNotification {
+   theme: string | undefined;
+   notification: string | undefined;
+   id: number;
+}

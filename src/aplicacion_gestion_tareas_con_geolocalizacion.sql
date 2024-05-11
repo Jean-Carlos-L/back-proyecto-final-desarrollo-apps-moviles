@@ -73,6 +73,8 @@ CREATE TABLE `users` (
   `username` varchar(25) NOT NULL,
   `email` varchar(100) NOT NULL,
   `password` varchar(255) NOT NULL,
+  `theme` varchar(25) NOT NULL,
+  `notification` varchar(25) NOT NULL,
   `state` tinyint(4) NOT NULL DEFAULT 1,
   `created_at` datetime NOT NULL DEFAULT current_timestamp(),
   `updated_at` datetime DEFAULT NULL

@@ -113,8 +113,31 @@ const updateUser = async (req: Request, res: Response) => {
    }
 }
 
+const updateThemeNotification = async (req: Request, res: Response) => {
+   try {
+      const { id } = req.params;
+      const { theme, notification } = req.body;
+
+      if (!theme && !notification) {
+         res.status(422).json({
+            message: 'Please provide theme or notification',
+         });
+         return;
+      }
+
+      userServices.updateThemeNotification({ id: parseInt(id), theme, notification });
+
+      res.status(200).json({
+         message: 'Configuration updated'
+      });
+   } catch (error) {
+      res.status(500).json('Error in updateThemeNotification function');
+   }
+}
+
 export default {
    login,
    createUser,
    updateUser,
+   updateThemeNotification
 };
