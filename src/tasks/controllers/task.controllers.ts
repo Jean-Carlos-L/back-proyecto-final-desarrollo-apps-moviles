@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import taskServices from "../services/task.services";
-import { TaskCreate } from "../models/task.model";
+import { TaskCreate, TaskUpdate } from "../models/task.model";
 
 const getTasks = async (req: Request, res: Response) => {
    try {
@@ -51,9 +51,9 @@ const createTask = async (req: Request, res: Response) => {
 const updateTask = async (req: Request, res: Response) => {
    try {
       const id = parseInt(req.params.id);
-      const { title, description, state } = req.body;
-      console.log('req.body', req.body)
-      const task = await taskServices.updateTask({ id, title, description, state });
+      delete req.body.userSession;
+      const editTask: TaskUpdate = { id, ...req.body }
+      const task = await taskServices.updateTask(editTask);
       res.status(200).json({
          message: 'Task updated successfully',
          data: task
@@ -76,4 +76,16 @@ const deleteTask = async (req: Request, res: Response) => {
    }
 }
 
-export default { getTasks, getTaskById, createTask, updateTask, deleteTask };
+const completeTask = async (req: Request, res: Response) => {
+   try {
+      const id = parseInt(req.params.id);
+      await taskServices.completeTask(id);
+      res.status(200).json({
+         message: 'Task completed successfully'
+      });
+   } catch (error) {
+      res.status(500).json({ message: 'Error in completeTask function' });
+   }
+}
+
+export default { getTasks, getTaskById, createTask, updateTask, deleteTask, completeTask };

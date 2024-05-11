@@ -1,6 +1,8 @@
 export interface TaskCreate {
    title: string;
    description: string;
+   priority: string;
+   remainder: string;
    latitude?: string;
    longitude?: string;
    altitude?: string;
@@ -17,6 +19,8 @@ export interface TaskUpdate {
    id: number;
    title: string;
    description: string;
+   priority: string;
+   remainder: string;
    latitude?: string;
    longitude?: string;
    altitude?: string;
