@@ -1,5 +1,5 @@
 import { queriesDb } from '../../utils/queriesDb';
-import { UserCreate, UserUpdate } from '../types/user';
+import { UserCreate, UserThemeNotification, UserUpdate } from '../types/user';
 import { CURRENT_TIMESTAMP } from '../../utils/dates.utils';
 
 const getUserById = async (id: number) => {
@@ -32,4 +32,11 @@ const updateUser = async ({ id, username, email, password }: UserUpdate) => {
    return rows;
 }
 
-export default { getUserByEmailAndPassword, createUser, updateUser, getUserByEmail, getUserById };
+const updateThemeNotification = async ({ id, theme, notification }: UserThemeNotification) => {
+   const query = `UPDATE users SET theme = COALESCE(?, theme), notification = COALESCE(?, notification) WHERE id = ?`;
+   const rows = await queriesDb(query, [theme, notification, id]);
+   return rows;
+}
+
+
+export default { getUserByEmailAndPassword, createUser, updateUser, getUserByEmail, getUserById, updateThemeNotification };

@@ -7,11 +7,12 @@ import { verifyTokenMiddleware } from '../../middlewares/auth.middleware';
 
 router.post('/login', userControllers.login);
 
-router.use(verifyTokenMiddleware);
-
 router.post('/', userControllers.createUser);
+
+router.use(verifyTokenMiddleware);
 
 router.put('/:id', userControllers.updateUser);
 
+router.put('/updateConfiguration/:id', userControllers.updateThemeNotification);
 
 export default router;
