@@ -3,6 +3,7 @@ import userServices from '../services/user.services';
 import { encryptPassword, comparePassword } from '../../utils/password.utils';
 import { createToken } from '../../utils/jwt.utils';
 import { User } from '../models/user.models';
+import { UserUpdate } from '../types/user';
 
 const login = async (req: Request, res: Response) => {
    try {
@@ -36,6 +37,8 @@ const login = async (req: Request, res: Response) => {
          email: user[0].email,
          username: user[0].username,
          password: user[0].password,
+         theme: user[0].theme,
+         notification: user[0].notification,
          state: user[0].state,
          create_at: user[0].create_at,
          update_at: user[0].update_at,
@@ -55,7 +58,7 @@ const login = async (req: Request, res: Response) => {
 const createUser = async (req: Request, res: Response) => {
    try {
       const { username, email, password } = req.body;
-
+      console.log('req.body', req.body)
       if (!username || !email || !password) {
          res.status(422).json({
             message: 'Please provide username, email and password',
@@ -85,11 +88,11 @@ const createUser = async (req: Request, res: Response) => {
 const updateUser = async (req: Request, res: Response) => {
    try {
       const { id } = req.params;
-      const { username, email, password } = req.body;
+      const { username, email, password, notification, theme } = req.body;
 
       if (!username || !email || !password) {
          res.status(422).json({
-            message: 'Please provide username, email and password',
+            message: 'Please provide username, email, password, notification and theme',
          });
          return;
       }
@@ -103,7 +106,11 @@ const updateUser = async (req: Request, res: Response) => {
       }
 
       const passwordEncrypted = await encryptPassword(password);
-      userServices.updateUser({ id: parseInt(id), username, email, password: passwordEncrypted });
+      const editUser: UserUpdate = { id: parseInt(id), username, email, theme, notification }
+      if (password) {
+         editUser.password = passwordEncrypted;
+      }
+      userServices.updateUser(editUser);
 
       res.status(200).json({
          message: 'User updated'

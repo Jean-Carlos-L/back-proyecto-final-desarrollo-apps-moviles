@@ -7,7 +7,9 @@ export interface UserCreate {
 export interface UserUpdate {
    username: string;
    email: string;
-   password: string;
+   password?: string;
+   theme: string | undefined;
+   notification: string | undefined;
    id: number;
 }
 

@@ -26,9 +26,9 @@ const createUser = async ({ username, email, password }: UserCreate) => {
    return rows;
 }
 
-const updateUser = async ({ id, username, email, password }: UserUpdate) => {
-   const query = `UPDATE users SET username = ?, email = ?, password = ?, updated_at = ? WHERE id = ?`;
-   const rows = await queriesDb(query, [username, email, password, CURRENT_TIMESTAMP(), id]);
+const updateUser = async ({ id, username, email, password, theme, notification }: UserUpdate) => {
+   const query = `UPDATE users SET username = ?, email = ?, password = ?, theme = ?, notification = ?, updated_at = ? WHERE id = ?`;
+   const rows = await queriesDb(query, [username, email, password, theme, notification, CURRENT_TIMESTAMP(), id]);
    return rows;
 }
 
