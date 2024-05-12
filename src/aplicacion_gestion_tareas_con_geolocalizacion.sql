@@ -73,8 +73,8 @@ CREATE TABLE `users` (
   `username` varchar(25) NOT NULL,
   `email` varchar(100) NOT NULL,
   `password` varchar(255) NOT NULL,
-  `theme` varchar(25) NOT NULL,
-  `notification` varchar(25) NOT NULL,
+  `theme` varchar(25) NOT NULL DEFAULT 'light',
+  `notification` varchar(25) NOT NULL DEFAULT 'on',
   `state` tinyint(4) NOT NULL DEFAULT 1,
   `created_at` datetime NOT NULL DEFAULT current_timestamp(),
   `updated_at` datetime DEFAULT NULL
@@ -87,6 +87,21 @@ CREATE TABLE `users` (
 INSERT INTO `users` (`id`, `username`, `email`, `password`, `state`, `created_at`, `updated_at`) VALUES
 (1, 'juanito', 'jua@gmail.com', '$2a$10$2A0ryOVJOeb.t/XBnFRDEOOE0FGb5BWh6UxZB0oRX1cUh3bdi1Gw2', 1, '2024-05-05 13:02:27', '2024-05-05 13:19:02'),
 (2, 'juanito', 'juan@gmail.com', '$2a$10$fPRHQNfIJwOvbFQzjJkgTuJsJtOXvlxT12nrZFlyEQbP1KFplXTYa', 1, '2024-05-05 13:19:32', '2024-05-09 16:27:24');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `sync_database`
+--
+
+CREATE TABLE sync_database (
+    id INT AUTO_INCREMENT,
+    query VARCHAR(255),
+    sync BOOLEAN DEFAULT FALSE,
+    PRIMARY KEY (id)
+);
+
+
 
 --
 -- Índices para tablas volcadas

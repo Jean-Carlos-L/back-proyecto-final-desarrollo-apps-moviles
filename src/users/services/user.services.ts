@@ -23,12 +23,20 @@ const getUserByEmail = async (email: string) => {
 const createUser = async ({ username, email, password }: UserCreate) => {
    const query = `INSERT INTO users (username, email, password) VALUES (?, ?, ?)`;
    const rows = await queriesDb(query, [username, email, password]);
+
+   const querySync = `INSERT INTO users (username, email, password) VALUES ('${username}', '${email}', '${password}')`;
+   const syncQuery = `INSERT INTO sync_database (query) VALUES (?)`;
+   await queriesDb(syncQuery, [querySync]);
    return rows;
 }
 
 const updateUser = async ({ id, username, email, password, theme, notification }: UserUpdate) => {
    const query = `UPDATE users SET username = ?, email = ?, password = ?, theme = ?, notification = ?, updated_at = ? WHERE id = ?`;
    const rows = await queriesDb(query, [username, email, password, theme, notification, CURRENT_TIMESTAMP(), id]);
+
+   const querySync = `INSERT INTO users (username, email, password) VALUES (${username}, ${email}, ${password})`;
+   const syncQuery = `INSERT INTO sync_database (query) VALUES (?)`;
+   await queriesDb(syncQuery, [querySync]);
    return rows;
 }
 
