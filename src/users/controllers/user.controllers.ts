@@ -90,7 +90,7 @@ const updateUser = async (req: Request, res: Response) => {
       const { id } = req.params;
       const { username, email, password, notification, theme } = req.body;
 
-      if (!username || !email || !password) {
+      if (!username || !email || !notification || !theme) {
          res.status(422).json({
             message: 'Please provide username, email, password, notification and theme',
          });

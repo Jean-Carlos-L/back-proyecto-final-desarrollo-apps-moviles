@@ -1,6 +1,6 @@
 import { queriesDb } from '../../utils/queriesDb';
 import { UserCreate, UserThemeNotification, UserUpdate } from '../types/user';
-import { CURRENT_TIMESTAMP } from '../../utils/dates.utils';
+import { createUpdateQuery } from '../../utils/generateQueries.utils';
 
 const getUserById = async (id: number) => {
    const query = `SELECT id, username, email, state, created_at, updated_at FROM users WHERE id = ?`;
@@ -26,9 +26,9 @@ const createUser = async ({ username, email, password }: UserCreate) => {
    return rows;
 }
 
-const updateUser = async ({ id, username, email, password, theme, notification }: UserUpdate) => {
-   const query = `UPDATE users SET username = ?, email = ?, password = ?, theme = ?, notification = ?, updated_at = ? WHERE id = ?`;
-   const rows = await queriesDb(query, [username, email, password, theme, notification, CURRENT_TIMESTAMP(), id]);
+const updateUser = async (editUser: UserUpdate) => {
+   const { query, values } = createUpdateQuery('users', editUser, editUser.id)
+   const rows = await queriesDb(query, values);
    return rows;
 }
 
