@@ -23,18 +23,31 @@ const getUserByEmail = async (email: string) => {
 const createUser = async ({ username, email, password }: UserCreate) => {
    const query = `INSERT INTO users (username, email, password) VALUES (?, ?, ?)`;
    const rows = await queriesDb(query, [username, email, password]);
+
+   const querySync = `INSERT INTO users (username, email, password) VALUES ('${username}', '${email}', '${password}')`;
+   const syncQuery = `INSERT INTO sync_database (query) VALUES (?)`;
+   await queriesDb(syncQuery, [querySync]);
    return rows;
 }
 
 const updateUser = async (editUser: UserUpdate) => {
    const { query, values } = createUpdateQuery('users', editUser, editUser.id)
    const rows = await queriesDb(query, values);
+
+   const querySync = `UPDATE users SET username = '${username}', email = '${email}', password = '${password}', theme = '${theme}',
+    notification = '${notification}', updated_at = '${CURRENT_TIMESTAMP()}' WHERE id = '${id}'`;
+   const syncQuery = `INSERT INTO sync_database (query) VALUES (?)`;
+   await queriesDb(syncQuery, [querySync]);
    return rows;
 }
 
 const updateThemeNotification = async ({ id, theme, notification }: UserThemeNotification) => {
    const query = `UPDATE users SET theme = COALESCE(?, theme), notification = COALESCE(?, notification) WHERE id = ?`;
    const rows = await queriesDb(query, [theme, notification, id]);
+
+   const querySync = `UPDATE users SET theme = COALESCE('${theme}', theme), notification = COALESCE('${notification}', notification) WHERE id = '${id}'`;
+   const syncQuery = `INSERT INTO sync_database (query) VALUES (?)`;
+   await queriesDb(syncQuery, [querySync]);
    return rows;
 }
 

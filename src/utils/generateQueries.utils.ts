@@ -25,3 +25,17 @@ export function createUpdateQuery(tableName: string, data: Record<any, any>, id:
 
    return { query, values: [...values, id] };
 }
+
+export const createSyncQuery = (query: string, values: any[]) => {
+   let querySync = query;
+
+   values.forEach((value) => {
+      if (typeof value === 'string') {
+          querySync = querySync.replace('?', `'${value}'`);
+      } else {
+          querySync = querySync.replace('?', `${value}`);
+      }
+  });
+
+  return querySync;
+}
