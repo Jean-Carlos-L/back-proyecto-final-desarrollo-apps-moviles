@@ -96,7 +96,7 @@ INSERT INTO `users` (`id`, `username`, `email`, `password`, `state`, `created_at
 
 CREATE TABLE sync_database (
     id INT AUTO_INCREMENT,
-    query VARCHAR(255),
+    query TEXT,
     sync BOOLEAN DEFAULT FALSE,
     PRIMARY KEY (id)
 );

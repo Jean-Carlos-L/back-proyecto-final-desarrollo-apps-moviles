@@ -34,7 +34,8 @@ const updateUser = async ({ id, username, email, password, theme, notification }
    const query = `UPDATE users SET username = ?, email = ?, password = ?, theme = ?, notification = ?, updated_at = ? WHERE id = ?`;
    const rows = await queriesDb(query, [username, email, password, theme, notification, CURRENT_TIMESTAMP(), id]);
 
-   const querySync = `INSERT INTO users (username, email, password) VALUES (${username}, ${email}, ${password})`;
+   const querySync = `UPDATE users SET username = '${username}', email = '${email}', password = '${password}', theme = '${theme}',
+    notification = '${notification}', updated_at = '${CURRENT_TIMESTAMP()}' WHERE id = '${id}'`;
    const syncQuery = `INSERT INTO sync_database (query) VALUES (?)`;
    await queriesDb(syncQuery, [querySync]);
    return rows;
@@ -43,6 +44,10 @@ const updateUser = async ({ id, username, email, password, theme, notification }
 const updateThemeNotification = async ({ id, theme, notification }: UserThemeNotification) => {
    const query = `UPDATE users SET theme = COALESCE(?, theme), notification = COALESCE(?, notification) WHERE id = ?`;
    const rows = await queriesDb(query, [theme, notification, id]);
+
+   const querySync = `UPDATE users SET theme = COALESCE('${theme}', theme), notification = COALESCE('${notification}', notification) WHERE id = '${id}'`;
+   const syncQuery = `INSERT INTO sync_database (query) VALUES (?)`;
+   await queriesDb(syncQuery, [querySync]);
    return rows;
 }
 
