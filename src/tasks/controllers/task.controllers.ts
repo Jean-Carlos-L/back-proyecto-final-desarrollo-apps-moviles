@@ -1,6 +1,8 @@
 import { Request, Response } from "express";
 import taskServices from "../services/task.services";
 import { TaskCreate, TaskUpdate } from "../models/task.model";
+import { generateUUID } from '../../utils/generateId';
+
 
 const getTasks = async (req: Request, res: Response) => {
    try {
@@ -33,11 +35,13 @@ const createTask = async (req: Request, res: Response) => {
    try {
       const user_id = req.body.userSession.id;
       delete req.body.userSession;
+      const id = await generateUUID();
       const newTask: TaskCreate = {
          ...req.body,
+         id,
          user_id
       };
-
+     
       const task = await taskServices.createTask(newTask);
       res.status(201).json({
          message: 'Task created successfully',
