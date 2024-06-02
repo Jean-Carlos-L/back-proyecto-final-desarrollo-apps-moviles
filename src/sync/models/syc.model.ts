@@ -1,4 +1,4 @@
-export interface sync {
+export interface Sync {
     id: number;
     query: string;
     sync: boolean;

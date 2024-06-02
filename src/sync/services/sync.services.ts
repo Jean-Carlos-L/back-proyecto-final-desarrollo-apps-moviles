@@ -1,4 +1,5 @@
 import { queriesDb } from '../../utils/queriesDb';
+import { Sync } from '../models/syc.model';
 
 const queryUpdateSyncDatabase = `UPDATE sync_database SET sync = 1 WHERE id = ?`;
 
@@ -8,6 +9,7 @@ const getRemoteQueries = async () => {
     return rows;
 }
 
+// Actualiza las queries que se encuentran en la base de datos remota
 const updateRempoteQueries = async () => {
     const queries = await getRemoteQueries();
     if (queries.length === 0) {
@@ -20,4 +22,17 @@ const updateRempoteQueries = async () => {
     return queries;
 }
 
-export default { updateRempoteQueries };
+
+// Ejecuta las queries locales en la base de datos remota
+const updateRemoteWithLocalQueries = async (queries: Sync[]) => {
+    if (queries.length === 0) {
+        return;
+    }
+    for (const query of queries) {
+        await queriesDb(query.query);
+    }
+    return queries;
+
+}
+
+export default { updateRempoteQueries, updateRemoteWithLocalQueries };
