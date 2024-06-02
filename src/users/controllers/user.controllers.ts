@@ -75,7 +75,7 @@ const createUser = async (req: Request, res: Response) => {
       }
 
       const passwordEncrypted = await encryptPassword(password);
-      userServices.createUser({ username, email, password: passwordEncrypted });
+      userServices.createUser({username, email, password: passwordEncrypted });
 
       res.status(201).json({
          message: 'User created'
