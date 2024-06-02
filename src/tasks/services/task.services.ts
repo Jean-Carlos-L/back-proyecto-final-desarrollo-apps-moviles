@@ -10,8 +10,8 @@ const getTasks = async ({ user_id }: { user_id: number }) => {
    return rows;
 }
 
-const getTaskById = async (id: number) => {
-   const query = `SELECT * FROM tasks WHERE id = ?`;
+const getTaskById = async (id: string) => {
+   const query = `SELECT * FROM tasks WHERE id_task = ?`;
    const rows = await queriesDb(query, [id]);
    return rows;
 }
@@ -28,7 +28,7 @@ const createTask = async (newTask: TaskCreate) => {
 }
 
 const updateTask = async (editTask: TaskUpdate) => {
-   const { query, values } = createUpdateQuery('tasks', editTask, editTask.id);
+   const { query, values } = createUpdateQuery('tasks', editTask, editTask.id_task);
    const rows = await queriesDb(query, values);
 
    const querySync = createSyncQuery(query, values);
@@ -38,8 +38,8 @@ const updateTask = async (editTask: TaskUpdate) => {
    return rows;
 }
 
-const deleteTask = async (id: number) => {
-   const query = `DELETE FROM tasks WHERE id = ?`;
+const deleteTask = async (id: string) => {
+   const query = `DELETE FROM tasks WHERE id_task = ?`;
    const rows = await queriesDb(query, [id]);
 
    const querySync = createSyncQuery(query, [id]);
@@ -49,8 +49,8 @@ const deleteTask = async (id: number) => {
    return rows;
 }
 
-const completeTask = async (id: number) => {
-   const query = `UPDATE tasks SET state = 2 WHERE id = ?`;
+const completeTask = async (id: string) => {
+   const query = `UPDATE tasks SET state = 2 WHERE id_task = ?`;
    const rows = await queriesDb(query, [id]);
 
    const querySync = createSyncQuery(query, [id]);

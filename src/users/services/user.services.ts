@@ -5,13 +5,13 @@ import {createSyncQuery} from "../../utils/generateQueries.utils";
 import { generateUUID } from '../../utils/generateId';
 
 const getUserById = async (id: number) => {
-   const query = `SELECT id, username, email, state, created_at, updated_at FROM users WHERE id = ?`;
+   const query = `SELECT id_user, username, email, state, created_at, updated_at FROM users WHERE id_user = ?`;
    const rows = await queriesDb(query, [id]);
    return rows;
 }
 
 const getUserByEmailAndPassword = async (email: string, password: string) => {
-   const query = `SELECT id, username, email, state, created_at, updated_at FROM users WHERE email = ? AND password = ?`;
+   const query = `SELECT id_user, username, email, state, created_at, updated_at FROM users WHERE email = ? AND password = ?`;
    const rows = await queriesDb(query, [email, password]);
    return rows;
 }
@@ -23,11 +23,11 @@ const getUserByEmail = async (email: string) => {
 }
 
 const createUser = async ({ username, email, password }: UserCreate) => {
-   const query = `INSERT INTO users (id, username, email, password) VALUES (?, ?, ?, ?)`;
+   const query = `INSERT INTO users (id_user, username, email, password) VALUES (?, ?, ?, ?)`;
    const id = await generateUUID();
    const rows = await queriesDb(query, [id, username, email, password]);
 
-   const querySync = `INSERT INTO users (id, username, email, password) VALUES ('${id}', '${username}', '${email}', '${password}')`;
+   const querySync = `INSERT INTO users (id_user, username, email, password) VALUES ('${id}', '${username}', '${email}', '${password}')`;
    const syncQuery = `INSERT INTO sync_database (query) VALUES (?)`;
    await queriesDb(syncQuery, [querySync]);
 
@@ -35,7 +35,7 @@ const createUser = async ({ username, email, password }: UserCreate) => {
 }
 
 const updateUser = async (editUser: UserUpdate) => {
-   const { query, values } = createUpdateQuery('users', editUser, editUser.id)
+   const { query, values } = createUpdateQuery('users', editUser, editUser.id_user)
    const rows = await queriesDb(query, values);
 
    const querySync = createSyncQuery(query, values);
@@ -44,11 +44,11 @@ const updateUser = async (editUser: UserUpdate) => {
    return rows;
 }
 
-const updateThemeNotification = async ({ id, theme, notification }: UserThemeNotification) => {
-   const query = `UPDATE users SET theme = COALESCE(?, theme), notification = COALESCE(?, notification) WHERE id = ?`;
-   const rows = await queriesDb(query, [theme, notification, id]);
+const updateThemeNotification = async ({ id_user, theme, notification }: UserThemeNotification) => {
+   const query = `UPDATE users SET theme = COALESCE(?, theme), notification = COALESCE(?, notification) WHERE id_user = ?`;
+   const rows = await queriesDb(query, [theme, notification, id_user]);
 
-   const querySync = `UPDATE users SET theme = COALESCE('${theme}', theme), notification = COALESCE('${notification}', notification) WHERE id = '${id}'`;
+   const querySync = `UPDATE users SET theme = COALESCE('${theme}', theme), notification = COALESCE('${notification}', notification) WHERE id_user = '${id_user}'`;
    const syncQuery = `INSERT INTO sync_database (query) VALUES (?)`;
    await queriesDb(syncQuery, [querySync]);
 

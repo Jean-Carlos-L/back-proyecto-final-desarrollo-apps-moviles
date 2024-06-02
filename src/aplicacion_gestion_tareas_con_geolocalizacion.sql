@@ -34,7 +34,7 @@ CREATE TABLE `tasks` (
   `priority` varchar(5) DEFAULT NULL,
   `remainder` datetime DEFAULT NULL,
   `latitude` varchar(255) DEFAULT NULL,
-  `logitude` varchar(255) DEFAULT NULL,
+  `longitude` varchar(255) DEFAULT NULL,
   `altitude` varchar(255) DEFAULT NULL,
   `accuracy` varchar(255) DEFAULT NULL,
   `altitude_accuracy` varchar(255) DEFAULT NULL,

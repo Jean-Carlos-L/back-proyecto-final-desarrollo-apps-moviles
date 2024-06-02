@@ -10,11 +10,11 @@ export interface UserUpdate {
    password?: string;
    theme: string | undefined;
    notification: string | undefined;
-   id: number;
+   id_user: sring;
 }
 
 export interface UserThemeNotification {
+   id_user: string;
    theme: string | undefined;
    notification: string | undefined;
-   id: number;
 }

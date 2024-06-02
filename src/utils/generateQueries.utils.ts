@@ -21,7 +21,7 @@ export function createUpdateQuery(tableName: string, data: Record<any, any>, id:
 
    const columns = keys.map(key => `${key} = ?`).join(', ');
 
-   const query = `UPDATE ${tableName} SET ${columns} WHERE id = ?`;
+   const query = `UPDATE ${tableName} SET ${columns} WHERE id_user = ?`;
 
    return { query, values: [...values, id] };
 }

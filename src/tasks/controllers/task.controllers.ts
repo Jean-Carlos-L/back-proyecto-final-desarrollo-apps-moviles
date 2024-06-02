@@ -19,7 +19,7 @@ const getTasks = async (req: Request, res: Response) => {
 
 const getTaskById = async (req: Request, res: Response) => {
    try {
-      const id = Number(req.params.id);
+      const id = req.params.id;
       const task = await taskServices.getTaskById(id);
       res.status(200).json({
          message: 'Task fetched successfully',
@@ -33,12 +33,12 @@ const getTaskById = async (req: Request, res: Response) => {
 
 const createTask = async (req: Request, res: Response) => {
    try {
-      const user_id = req.body.userSession.id;
+      const user_id = req.body.userSession.id_user;
       delete req.body.userSession;
       const id = await generateUUID();
       const newTask: TaskCreate = {
          ...req.body,
-         id,
+         id_task: id,
          user_id
       };
      
@@ -54,9 +54,9 @@ const createTask = async (req: Request, res: Response) => {
 
 const updateTask = async (req: Request, res: Response) => {
    try {
-      const id = parseInt(req.params.id);
+      const id_task = req.params.id;
       delete req.body.userSession;
-      const editTask: TaskUpdate = { id, ...req.body }
+      const editTask: TaskUpdate = { id_task, ...req.body }
       const task = await taskServices.updateTask(editTask);
       res.status(200).json({
          message: 'Task updated successfully',
@@ -71,7 +71,7 @@ const updateTask = async (req: Request, res: Response) => {
 
 const deleteTask = async (req: Request, res: Response) => {
    try {
-      const id = parseInt(req.params.id);
+      const id = req.params.id;
       await taskServices.deleteTask(id);
       res.status(200).json({
          message: 'Task deleted successfully'
@@ -83,7 +83,7 @@ const deleteTask = async (req: Request, res: Response) => {
 
 const completeTask = async (req: Request, res: Response) => {
    try {
-      const id = parseInt(req.params.id);
+      const id = req.params.id;
       await taskServices.completeTask(id);
       res.status(200).json({
          message: 'Task completed successfully'

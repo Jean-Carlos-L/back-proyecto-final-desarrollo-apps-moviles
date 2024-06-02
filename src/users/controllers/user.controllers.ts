@@ -33,7 +33,7 @@ const login = async (req: Request, res: Response) => {
       }
 
       const userObject: User = {
-         id: user[0].id,
+         id_user: user[0].id_user,
          email: user[0].email,
          username: user[0].username,
          password: user[0].password,
@@ -98,7 +98,7 @@ const updateUser = async (req: Request, res: Response) => {
       }
 
       const existingUser = await userServices.getUserByEmail(email);
-      if (existingUser.length > 0 && existingUser[0].id !== parseInt(id)) {
+      if (existingUser.length > 0 && existingUser[0].id_user !== id) {
          res.status(404).json({
             message: 'Email already exists',
          });
@@ -106,7 +106,7 @@ const updateUser = async (req: Request, res: Response) => {
       }
 
       const passwordEncrypted = await encryptPassword(password);
-      const editUser: UserUpdate = { id: parseInt(id), username, email, theme, notification }
+      const editUser: UserUpdate = { id_user: id, username, email, theme, notification }
       if (password) {
          editUser.password = passwordEncrypted;
       }
@@ -132,7 +132,7 @@ const updateThemeNotification = async (req: Request, res: Response) => {
          return;
       }
 
-      userServices.updateThemeNotification({ id: parseInt(id), theme, notification });
+      userServices.updateThemeNotification({ id_user: id, theme, notification });
 
       res.status(200).json({
          message: 'Configuration updated'

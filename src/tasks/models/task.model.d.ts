@@ -1,5 +1,5 @@
 export interface TaskCreate {
-   id: string;
+   id_task: string;
    title: string;
    description: string;
    priority: string;
@@ -17,7 +17,7 @@ export interface TaskCreate {
 }
 
 export interface TaskUpdate {
-   id: number;
+   id_task: sring;
    title: string;
    description: string;
    priority: string;
