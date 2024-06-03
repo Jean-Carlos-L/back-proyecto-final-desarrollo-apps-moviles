@@ -14,6 +14,7 @@ const getQuerysToSyncLocal = async (_: Request, res: Response) => {
 const getQuerysToSyncRemote = async (req: Request, res: Response) => {
     try {
         const localQueries = req.body;
+        console.log('localQueries', localQueries)
         await syncServices.updateRemoteWithLocalQueries(localQueries);
         res.status(200).json({
             message: 'Remote database updated successfully'

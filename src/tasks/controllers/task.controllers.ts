@@ -6,7 +6,7 @@ import { generateUUID } from '../../utils/generateId';
 
 const getTasks = async (req: Request, res: Response) => {
    try {
-      const user_id = req.body.userSession.id;
+      const user_id = req.body.userSession.id_user;
       const tasks = await taskServices.getTasks({ user_id });
       res.status(200).json({
          message: 'Tasks fetched successfully',
@@ -41,7 +41,7 @@ const createTask = async (req: Request, res: Response) => {
          id_task: id,
          user_id
       };
-     
+
       const task = await taskServices.createTask(newTask);
       res.status(201).json({
          message: 'Task created successfully',
